@@ -1,0 +1,23 @@
+{
+  "name": "utils-scripts-capIQ",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.40",
+    "@langchain/openai": "^0.4.4",
+    "dotenv": "^16.4.7",
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "utils-scripts-capIQ": "file:"
+  },
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.27",
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
