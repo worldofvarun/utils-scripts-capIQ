@@ -12,11 +12,24 @@ import {MetaData, Result} from "../utils/types";
 async function extractVideoFramesToBase64(source: string): Promise<Result> {
 
     const {filename, duration}: MetaData = await new Promise((resolve, reject) => {
-        ffmpeg.ffprobe(source, (err, metadata) => {
-            if (err) return reject(new Error(`Video ffprobe failed with error: ${err.message}`));
-            resolve({filename: (metadata.format.filename as string), duration: (metadata.format.duration as number)});
-        })
-    })
+        let duration = 0;
+        let filename = source;
+
+        const command = ffmpeg(source)
+            .on('codecData', (data) => {
+                if (data && data.duration) {
+                    const [hours, minutes, seconds] = data.duration.split(':').map(parseFloat);
+                    duration = hours * 3600 + minutes * 60 + seconds;
+                }
+            })
+            .on('error', (err) => reject(new Error(`FFmpeg error: ${err.message}`)))
+            .on('end', () => {
+                resolve({ filename, duration });
+            });
+
+        command.outputOptions('-f null').output('-'); // Dummy output to prevent the error
+        command.run();
+    });
 
     const tasks = FRAME_INTERVALS.map(({label, percentage}) => {
         const time = duration * percentage;
