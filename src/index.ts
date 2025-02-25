@@ -16,4 +16,8 @@ const FILES = ["C:/test/test/test/test.mp4", "C:/test/test/test/test.mp4"];
 const FOLDER = "\"C:/test/test/test/"
 const pipeline = new MediaAnalysisPipeline();
 // path, mediaType: both | images | video
-pipeline.processMedia(FOLDER, "both"); //
+
+const output = pipeline.processMedia(FILES, "both").then((result) => {
+    console.log(result);
+}); 
+
