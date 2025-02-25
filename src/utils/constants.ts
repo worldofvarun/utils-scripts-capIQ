@@ -60,3 +60,5 @@ export const JSON_SCHEMA = {
         }
     }
 } as ChatOpenAIResponseFormat;
+
+export const OUTPUT_FOLDER = '.capiq';
