@@ -4,11 +4,11 @@ export interface FrameInterval{
 }
 
 export interface MetaData{
-    filename: string;
+    filepath: string;
     duration: number;
 }
 
 export interface Result{
-    filename: string;
+    filepath: string;
     image_urls: string[];
 }
