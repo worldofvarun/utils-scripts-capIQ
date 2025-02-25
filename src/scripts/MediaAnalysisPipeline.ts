@@ -56,7 +56,18 @@ export class MediaAnalysisPipeline {
 
         const analysisResult = await this.aiAnalyzer.analyzeImages(base64Frames);
 
-        await this.deleteCapiqFiles(extractedFrames.image_urls);
+        try {
+            for (const imagePath of extractedFrames.image_urls) {
+                try {
+                    await fs.unlink(imagePath);
+                } catch (error) {
+
+                    console.warn(`Warning: Could not delete file ${imagePath}: ${(error as Error).message}`);
+                }
+            }
+        } catch (error) {
+            console.error(`Error during cleanup: ${(error as Error).message}`);
+        }
 
         return analysisResult;
     }
@@ -81,16 +92,6 @@ export class MediaAnalysisPipeline {
                 );
         } catch (error) {
             return [];
-        }
-    }
-
-    private async deleteCapiqFiles(files: string[]): Promise<void> {
-        for (const file of files) {
-            try {
-                await fs.unlink(file);
-            } catch (error) {
-                // Silent fail
-            }
         }
     }
 }
